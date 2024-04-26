@@ -1,0 +1,9 @@
+{
+	"name": "calcaria-adf-dev",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "d7392015-ae23-4518-a21e-c96450a504cc",
+		"tenantId": "ed9aa516-5358-4016-a8b2-b6ccb99142d0"
+	}
+}
