@@ -1,0 +1,9 @@
+{
+	"name": "adf-calcaria-pbiDemo",
+	"location": "southeastasia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "8f0fad9f-19ad-43b8-92cd-e885e8d47698",
+		"tenantId": "ed9aa516-5358-4016-a8b2-b6ccb99142d0"
+	}
+}
