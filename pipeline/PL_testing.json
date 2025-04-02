@@ -72,7 +72,10 @@
 									"parameters": {
 										"a": "bronze",
 										"b": "test",
-										"c": "OracleFusionOnHand_Duplicates.csv"
+										"c": {
+											"value": "OracleFusionOnHand_Duplicates.csv",
+											"type": "Expression"
+										}
 									}
 								}
 							],
@@ -82,8 +85,11 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"a": "silver",
-										"b": "nekenke",
-										"c": "g.csv"
+										"b": "demo",
+										"c": {
+											"value": "OracleFusionOnHand_Duplicates_@{string(variables('final_counter'))}.csv",
+											"type": "Expression"
+										}
 									}
 								}
 							]
@@ -183,9 +189,6 @@
 			}
 		],
 		"parameters": {
-			"counter": {
-				"type": "string"
-			},
 			"numberOfFiles": {
 				"type": "string"
 			}
