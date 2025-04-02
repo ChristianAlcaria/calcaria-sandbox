@@ -113,7 +113,7 @@
 							"typeProperties": {
 								"variableName": "final_counter",
 								"value": {
-									"value": "@add(variables('initial_counter'),1)\n",
+									"value": "@string(add(int(variables('initial_counter')),1))\n",
 									"type": "Expression"
 								}
 							}
@@ -137,7 +137,7 @@
 							"typeProperties": {
 								"variableName": "initial_counter",
 								"value": {
-									"value": "@int(variables('final_counter'))",
+									"value": "@string(variables('final_counter'))",
 									"type": "Expression"
 								}
 							}
