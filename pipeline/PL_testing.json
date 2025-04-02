@@ -5,11 +5,18 @@
 			{
 				"name": "Until1",
 				"type": "Until",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set Final Counter",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@greaterOrEquals(int(pipeline().parameters.counter),1)",
+						"value": "@greaterOrEquals(int(variables('final_counter')),int(pipeline().parameters.numberOfFiles))",
 						"type": "Expression"
 					},
 					"activities": [
@@ -82,82 +89,84 @@
 							]
 						},
 						{
-							"name": "Copy data1_copy1",
-							"type": "Copy",
-							"dependsOn": [],
+							"name": "Until Set Final Counter",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Copy data1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
 								"secureOutput": false,
 								"secureInput": false
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"source": {
-									"type": "DelimitedTextSource",
-									"storeSettings": {
-										"type": "AzureBlobFSReadSettings",
-										"recursive": true,
-										"enablePartitionDiscovery": false
-									},
-									"formatSettings": {
-										"type": "DelimitedTextReadSettings"
-									}
-								},
-								"sink": {
-									"type": "DelimitedTextSink",
-									"storeSettings": {
-										"type": "AzureBlobFSWriteSettings"
-									},
-									"formatSettings": {
-										"type": "DelimitedTextWriteSettings",
-										"quoteAllText": true,
-										"fileExtension": ".txt"
-									}
-								},
-								"enableStaging": false,
-								"translator": {
-									"type": "TabularTranslator",
-									"typeConversion": true,
-									"typeConversionSettings": {
-										"allowDataTruncation": true,
-										"treatBooleanAsNumber": false
-									}
+								"variableName": "final_counter",
+								"value": {
+									"value": "@add(int(variables('initial_counter')),1)\n",
+									"type": "Expression"
 								}
-							},
-							"inputs": [
+							}
+						},
+						{
+							"name": "Until Set InitialCounter",
+							"type": "SetVariable",
+							"dependsOn": [
 								{
-									"referenceName": "DelimitedText1",
-									"type": "DatasetReference",
-									"parameters": {
-										"a": "bronze",
-										"b": "test",
-										"c": "OracleFusionOnHand_Duplicates.csv"
-									}
+									"activity": "Until Set Final Counter",
+									"dependencyConditions": [
+										"Succeeded"
+									]
 								}
 							],
-							"outputs": [
-								{
-									"referenceName": "DelimitedText1",
-									"type": "DatasetReference",
-									"parameters": {
-										"a": "silver",
-										"b": "nekenke",
-										"c": "g.csv"
-									}
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "initial_counter",
+								"value": {
+									"value": "@int(variables('final_counter'))",
+									"type": "Expression"
 								}
-							]
+							}
 						}
 					],
 					"timeout": "0.02:00:00"
 				}
 			},
 			{
-				"name": "Set variable1",
+				"name": "Set Final Counter",
 				"type": "SetVariable",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [
+					{
+						"activity": "Set Initial Counter",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "final_counter",
+					"value": {
+						"value": "0",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set Initial Counter",
+				"type": "SetVariable",
 				"dependsOn": [],
 				"policy": {
 					"secureOutput": false,
@@ -165,9 +174,9 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "test",
+					"variableName": "initial_counter",
 					"value": {
-						"value": "@greaterOrEquals(int(pipeline().parameters.counter),1)",
+						"value": "0",
 						"type": "Expression"
 					}
 				}
@@ -176,11 +185,17 @@
 		"parameters": {
 			"counter": {
 				"type": "string"
+			},
+			"numberOfFiles": {
+				"type": "string"
 			}
 		},
 		"variables": {
-			"test": {
-				"type": "Boolean"
+			"initial_counter": {
+				"type": "String"
+			},
+			"final_counter": {
+				"type": "String"
 			}
 		},
 		"annotations": [],
