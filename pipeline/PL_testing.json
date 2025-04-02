@@ -3,13 +3,16 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Switch1",
-				"type": "Switch",
+				"name": "Until1",
+				"type": "Until",
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
-					"cases": [],
-					"defaultActivities": [
+					"expression": {
+						"value": "@greaterOrEquals(int(pipeline().parameters.counter),1)",
+						"type": "Expression"
+					},
+					"activities": [
 						{
 							"name": "Copy data1",
 							"type": "Copy",
@@ -146,7 +149,8 @@
 								}
 							]
 						}
-					]
+					],
+					"timeout": "0.02:00:00"
 				}
 			}
 		],
