@@ -152,11 +152,35 @@
 					],
 					"timeout": "0.02:00:00"
 				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "test",
+					"value": {
+						"value": "@greaterOrEquals(int(pipeline().parameters.counter),1)",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
 			"counter": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"test": {
+				"type": "Boolean"
 			}
 		},
 		"annotations": [],
